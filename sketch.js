@@ -8,7 +8,8 @@ let x2 = 0;
 let y2 = -arcRadius;
 let target;
 let segmentTheta;
-let showTarget;
+let showGuard;
+let peak;
 
 function preload() {
   table = loadTable("pairs.csv", "csv");
@@ -16,14 +17,16 @@ function preload() {
 
 function setup() {
   createCanvas(sketchWidth, sketchHeight);
+  background(220);
   textAlign(CENTER);
+  textFont('Helvetica');
+  textSize(16);
 
   pair = new Scale(table.getArray());
   pair.newScale();
 
-  background(220);
-
-  showTarget = true;
+  showGuard = true;
+  peak = false;
 
   fill(255);
   noStroke();
@@ -74,8 +77,12 @@ function draw() {
     PIE
   );
 
-  if (showTarget) {
-    fill(128, 170, 178);
+  if (showGuard) {
+    if (peak) {
+      fill(128, 170, 178, 200);
+    } else {
+      fill(128, 170, 178);
+    }
     arc(0, 0, arcDiameter, arcDiameter, PI, 0, CHORD);
   }
 
@@ -83,8 +90,10 @@ function draw() {
   rect(-width / 2, 0, width, height / 4);
 
   fill(0);
-  text(pair.left, -width / 4, 0, 70, 80);
-  text(pair.right, width / 4, 0, 70, 80);
+  rectMode(CENTER);
+  text(pair.left, -width / 4, 50, 120, 80);
+  text(pair.right, width / 4, 50, 120, 80);
+  rectMode(CORNER);
 
   stroke(185, 55, 59);
   strokeWeight(5);
@@ -116,11 +125,19 @@ function moveDial(){
 }
 
 function keyPressed() {
-  if (key === "r") {
-    if (showTarget) {
-      showTarget = false;
+  if (key === "r" || key === "R") {
+    if (showGuard) {
+      showGuard = false;
     } else {
-      showTarget = true;
+      showGuard = true;
+    }
+  }
+
+  if ((key === "p" || key === "P") && showGuard) {
+    if (peak) {
+      peak = false;
+    } else {
+      peak = true;
     }
   }
 }
