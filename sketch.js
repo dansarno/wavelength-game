@@ -3,7 +3,7 @@ let sketchHeight = 400;
 let arcDiameter = sketchHeight * 1.2;
 let arcRadius = arcDiameter / 2;
 let table;
-let randScale;
+let pair;
 let x2 = 0;
 let y2 = -arcRadius;
 let target;
@@ -18,8 +18,8 @@ function setup() {
   createCanvas(sketchWidth, sketchHeight);
   textAlign(CENTER);
 
-  let tableArray = table.getArray();
-  randScale = random(tableArray);
+  pair = new Scale(table.getArray());
+  pair.newScale();
 
   background(220);
 
@@ -83,8 +83,8 @@ function draw() {
   rect(-width / 2, 0, width, height / 4);
 
   fill(0);
-  text(randScale[0], -width / 4, 0, 70, 80);
-  text(randScale[1], width / 4, 0, 70, 80);
+  text(pair.left, -width / 4, 0, 70, 80);
+  text(pair.right, width / 4, 0, 70, 80);
 
   stroke(185, 55, 59);
   strokeWeight(5);
