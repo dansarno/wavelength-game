@@ -10,6 +10,7 @@ let target;
 let segmentTheta;
 let showGuard;
 let peak;
+let dial;
 
 function preload() {
   table = loadTable("pairs.csv", "csv");
@@ -24,6 +25,8 @@ function setup() {
 
   pair = new Scale(table.getArray());
   pair.newScale();
+
+  dial = new Dial(width / 2, (3 * height) / 4);
 
   showGuard = true;
   peak = false;
@@ -95,42 +98,28 @@ function draw() {
   text(pair.right, width / 4, 50, 120, 80);
   rectMode(CORNER);
 
-  stroke(185, 55, 59);
-  strokeWeight(5);
-  line(0, 0, x2, y2);
-
-  fill(185, 55, 59);
-  circle(0, 0, 25);
+  dial.render();
 }
 
 function mouseDragged() {
-  moveDial();
+  dial.moveDial();
 }
 
 function mouseClicked() {
-  moveDial();
+  dial.moveDial();
 }
 
-function moveDial(){
-    let mouseTheta = atan(abs((3 * height) / 4 - mouseY) / (mouseX - width / 2));
-
-  if (mouseTheta < 0) {
-    mouseTheta = mouseTheta + PI;
+function toggleReveal() {
+  if (showGuard) {
+    showGuard = false;
+  } else {
+    showGuard = true;
   }
-
-  // print(((PI - mouseTheta) / PI) * 10);
-
-  x2 = arcRadius * cos(-mouseTheta);
-  y2 = arcRadius * sin(-mouseTheta);
 }
 
 function keyPressed() {
   if (key === "r" || key === "R") {
-    if (showGuard) {
-      showGuard = false;
-    } else {
-      showGuard = true;
-    }
+    toggleReveal()
   }
 
   if ((key === "p" || key === "P") && showGuard) {
