@@ -18,7 +18,7 @@ function preload() {
 
 function setup() {
   createCanvas(sketchWidth, sketchHeight);
-  background(220);
+  background(221);
   textAlign(CENTER);
   textFont('Helvetica');
   textSize(16);
@@ -49,17 +49,13 @@ function mouseClicked() {
   device.moveDial();
 }
 
-function toggleReveal() {
-  if (showGuard) {
-    showGuard = false;
-  } else {
-    showGuard = true;
-  }
-}
-
 function keyPressed() {
   if (key === "r" || key === "R") {
-    toggleReveal()
+    if (device.screenShown) {
+      device.reveal();
+    } else {
+      device.conceal()
+    }
   }
 
   if ((key === "p" || key === "P") && showGuard) {
@@ -68,5 +64,9 @@ function keyPressed() {
     } else {
       peak = true;
     }
+  }
+
+  if (key === "n" || key === "N") {
+    device.randomiseTarget();
   }
 }

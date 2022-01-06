@@ -3,12 +3,19 @@ class Device {
     this.xorigin = x;
     this.yorigin = y;
     this.radius = r;
+
     this.dialPosition = 5;
     this.dialLength = 0.8 * r;
     this.dialDiameter = 0.35 * r;
+
     this.targetWidth = 0.4;
-    this.targetPosition = random(3 * this.targetWidth, 10 - (3 * this.targetWidth));
-    this.showScreen = true;
+    this.targetPosition = random(this.targetWidth, 10 - this.targetWidth);
+
+    this.screenShown = true;
+    this.screenPosition = 0;
+    this.screenSpeed = 0.1; // pos/frame
+    this.screenRevealAnimation = false;
+    this.screenConcealAnimation = false;
   }
 
   moveDial() {
@@ -21,13 +28,69 @@ class Device {
     this.dialPosition = this.theta2position(mouseTheta);
   }
 
-  checkScore(){
+  randomiseTarget() {
+    this.targetPosition = random(this.targetWidth, 10 - this.targetWidth);
+  }
+
+  reveal() {
+    if (this.screenPosition >= 10) {
+      this.screenShown = false;
+      this.screenRevealAnimation = false;
+    } else {
+      this.screenPosition += this.screenSpeed;
+      this.screenRevealAnimation = true;
+    }
+  }
+
+  conceal() {
+    if (this.screenPosition <= 0) {
+      this.screenShown = true;
+      this.screenConcealAnimation = false;
+    } else {
+      this.screenPosition -= this.screenSpeed;
+      this.screenConcealAnimation = true;
+    }
+  }
+
+  checkScore() {
+    let isGreaterThanOuterTargetMin = this.targetPosition - 2.5 * this.targetWidth < this.dialPosition;
+    let isLessThanOuterTargetMax = this.targetPosition - 1.5 * this.targetWidth > this.dialPosition;
+    if (isGreaterThanOuterTargetMin && isLessThanOuterTargetMax) {
+      noStroke();
+      fill(0);
+      text("2", 0, 0);
+    }
+
+    let isGreaterThanMiddleTargetMin = this.targetPosition - 1.5 * this.targetWidth < this.dialPosition;
+    let isLessThanMiddleTargetMax = this.targetPosition - 0.5 * this.targetWidth > this.dialPosition;
+    if (isGreaterThanMiddleTargetMin && isLessThanMiddleTargetMax) {
+      noStroke();
+      fill(0);
+      text("3", 0, 0);
+    }
+
     let isGreaterThanTargetMin = this.targetPosition - this.targetWidth/2 < this.dialPosition;
     let isLessThanTargetMax = this.targetPosition + this.targetWidth/2 > this.dialPosition;
     if (isGreaterThanTargetMin && isLessThanTargetMax) {
       noStroke();
       fill(0);
-      text("Hi", 0, 0);
+      text("4", 0, 0);
+    }
+
+    isGreaterThanMiddleTargetMin = this.targetPosition + 0.5 * this.targetWidth < this.dialPosition;
+    isLessThanMiddleTargetMax = this.targetPosition + 1.5 * this.targetWidth > this.dialPosition;
+    if (isGreaterThanMiddleTargetMin && isLessThanMiddleTargetMax) {
+      noStroke();
+      fill(0);
+      text("3", 0, 0);
+    }
+
+    isGreaterThanOuterTargetMin = this.targetPosition + 1.5 * this.targetWidth < this.dialPosition;
+    isLessThanOuterTargetMax = this.targetPosition + 2.5 * this.targetWidth > this.dialPosition;
+    if (isGreaterThanOuterTargetMin && isLessThanOuterTargetMax) {
+      noStroke();
+      fill(0);
+      text("2", 0, 0);
     }
   }
 
@@ -130,17 +193,29 @@ class Device {
     rotate(this.position2theta(this.targetPosition + this.targetWidth * 2) - PI/2);
     rectMode(CORNER);
 
-    if (showGuard) {
-      if (peak) {
-        fill(128, 170, 178, 200);
-      } else {
-        fill(128, 170, 178);
-      }
-      arc(0, 0, this.radius * 2, this.radius * 2, PI, 0, CHORD);
+    // Screen
+
+    if (this.screenRevealAnimation) {
+      this.reveal();
     }
+
+    if (this.screenConcealAnimation) {
+      this.conceal();
+    }
+
+    if (peak) {
+      fill(128, 170, 178, 200);
+    } else {
+      fill(128, 170, 178);
+    }
+    arc(0, 0, this.radius * 2, this.radius * 2, TWO_PI - this.position2theta(this.screenPosition), 3 * PI, PIE);
+
+    // Base
 
     fill(220);
     rect(-width / 2, 0, width, height / 4);
+
+    // Card
 
     fill(0);
     rectMode(CENTER);
