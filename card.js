@@ -44,11 +44,11 @@ class Card {
     text(this.right, cardHeight / 2, 1.5 * cardY, 120, cardHeight + 10);
     rectMode(CORNER);
 
-    let v0 = createVector(-40, cardY - 40);
+    let v0 = createVector(-cardY * 0.3, cardY * 0.8);
     let v1 = createVector(-cardHeight / 2, 0);
     this.#drawArrow(v0, v1);
     
-    let v2 = createVector(40, cardY - 40);
+    let v2 = createVector(cardY * 0.3, cardY * 0.8);
     let v3 = createVector(cardHeight / 2, 0);
     this.#drawArrow(v2, v3);
   }

@@ -1,6 +1,6 @@
 let sketchWidth = 1200;
 let sketchHeight = 800;
-let arcDiameter = sketchHeight * 1;
+let arcDiameter = sketchHeight;
 let arcRadius = arcDiameter / 2;
 let pairsTable;
 let coloursTable;
@@ -9,7 +9,6 @@ let x2 = 0;
 let y2 = -arcRadius;
 let target;
 let segmentTheta;
-let peak;
 let device;
 let button, button2, button3, button4;
 
@@ -23,7 +22,7 @@ function setup() {
   background(221);
   textAlign(CENTER);
   textFont('Helvetica');
-  textSize(20);
+  textSize(sketchHeight / 40);
 
   angleMode(RADIANS);
 
@@ -79,10 +78,10 @@ function toggleScreen() {
 }
 
 function togglePeak() {
-  if (peak) {
-    peak = false;
+  if (device.peak) {
+    device.peak = false;
   } else {
-    peak = true;
+    device.peak = true;
   }
 }
 

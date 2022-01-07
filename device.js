@@ -12,10 +12,17 @@ class Device {
     this.targetPosition = random(this.targetWidth, 10 - this.targetWidth);
 
     this.screenShown = true;
+    this.peak = false;
     this.screenPosition = 0;
-    this.screenSpeed = 0.1; // pos/frame
+    // this.screenSpeed = 0.04; // rad/frame
     this.screenRevealAnimation = false;
     this.screenConcealAnimation = false;
+    this.screenHandleWidth = this.radius * 0.1;
+
+    this.newWheelPosition = 0;
+    this.currentWheelPosition = 0;
+    this.oldWheelPosition = 0;
+    this.wheelAnimation = false;
   }
 
   moveDial() {
@@ -31,26 +38,49 @@ class Device {
   }
 
   randomiseTarget() {
-    this.targetPosition = random(this.targetWidth, 10 - this.targetWidth);
+    this.newWheelPosition = this.oldWheelPosition + ((((random() > 0.5) * 2) - 1) * random(2, 4));
+    this.wheelAnimation = true;
+    this.peak = false;
+    this.conceal();
+  }
+
+  wheelTurning() {
+    if (round(this.currentWheelPosition, 1) == round(this.newWheelPosition, 1)) {
+      this.targetPosition = random(this.targetWidth, 10 - this.targetWidth);
+      this.wheelAnimation = false;
+      this.oldWheelPosition = this.currentWheelPosition;
+    } else {
+      this.currentWheelPosition += (this.newWheelPosition - this.oldWheelPosition) / 100;
+      this.wheelAnimation = true;
+    }
   }
 
   reveal() {
-    if (this.screenPosition >= 10) {
+    let stopPosition = tan(this.screenHandleWidth / this.radius);
+    if (this.screenPosition <= -PI + stopPosition) {
       this.screenShown = false;
       this.screenRevealAnimation = false;
     } else {
-      this.screenPosition += this.screenSpeed;
+      if (abs(this.screenPosition - (-PI + stopPosition)) < (PI - stopPosition) / 100) {
+        this.screenPosition = -PI + stopPosition;
+      } else {
+        this.screenPosition -= (PI - stopPosition) / 100;
+      }
       this.screenRevealAnimation = true;
     }
   }
 
   conceal() {
-    if (this.screenPosition <= 0) {
-      this.screenShown = true;
+    if (this.screenPosition >= 0) {
       this.screenConcealAnimation = false;
     } else {
-      this.screenPosition -= this.screenSpeed;
+      if (abs(this.screenPosition) < PI / 100) {
+        this.screenPosition = 0;
+      } else {
+        this.screenPosition += PI / 100;
+      }
       this.screenConcealAnimation = true;
+      this.screenShown = true;
     }
   }
 
@@ -104,14 +134,59 @@ class Device {
     return PI - ((position / 10) * PI);
   }
 
+  drawWheel(xorigin, yorigin, radius, delta, numPoints, initTheta) {
+  
+    rotate(initTheta);
+
+    let increment = TWO_PI / numPoints;
+    
+    stroke(200);
+    strokeWeight(2);
+    fill(241, 236, 226);
+    
+    beginShape();
+    for (let i = 0; i <= numPoints + 2; i++) {
+      let isOdd = ((i % 2) * 2) - 1;
+      
+      let x = (radius + (isOdd * delta)) * cos(i * increment) + xorigin;
+      let y = (radius + (isOdd * delta)) * sin(i * increment) + yorigin;
+      
+      curveVertex(x, y);
+    }
+    endShape();
+
+    rotate(-initTheta);
+  }
+
+  drawScreen(xorigin, yorigin, radius, handleWidth) {
+    arc(xorigin, yorigin, radius * 2, radius * 2, PI, 0, PIE);
+
+    rectMode(CENTER);
+    let handleLength = handleWidth * 5;
+
+    stroke(100);
+    strokeWeight(0.3);
+    fill(120, 162, 170);
+    rect(xorigin + radius + handleLength / 4, yorigin - handleWidth / 2, handleLength, handleWidth, 30);
+    noStroke();
+    rectMode(CORNER);
+  }
+
   render() {
+
+    // Wheel outer grip
+    if (this.wheelAnimation) {
+      this.wheelTurning();
+    }
+
+    this.drawWheel(0, 0, this.radius * 1.12, this.radius * 0.03, 60, this.currentWheelPosition);
 
     // Housing
     noStroke();
     fill(15, 17, 50);
     circle(0, 0, this.radius * 2.15);
 
-    // Device background arc
+    // Wheel inner arc
     noStroke();
     fill(241, 236, 226);
     arc(0, 0, this.radius * 2, this.radius * 2, PI, 0, CHORD);
@@ -206,16 +281,33 @@ class Device {
       this.conceal();
     }
 
-    if (peak) {
+    if (this.peak) {
       fill(128, 170, 178, 200);
     } else {
       fill(128, 170, 178);
     }
-    arc(0, 0, this.radius * 2, this.radius * 2, TWO_PI - this.position2theta(this.screenPosition), 3 * PI, PIE);
+
+    rotate(this.screenPosition);
+    this.drawScreen(0, 0, this.radius, this.screenHandleWidth);
+    rotate(-this.screenPosition);
 
     // Base
     fill(15, 17, 50);
     arc(0, 0, this.radius * 2.1, this.radius * 2.1, TWO_PI, PI, PIE);
+
+    // Base guard right
+    beginShape();
+    vertex(0, 0);
+    vertex(this.radius * 0.87, 0);
+    vertex(this.radius * 0.87 * cos(-0.12), this.radius * 0.87 * sin(-0.12));
+    endShape();
+
+    // Base guard left
+    beginShape();
+    vertex(0, 0);
+    vertex(-this.radius * 0.87, 0);
+    vertex(-this.radius * 0.87 * cos(0.12), -this.radius * 0.87 * sin(0.12));
+    endShape();
 
     // Dial
     let mouseTheta = this.position2theta(this.dialPosition);
