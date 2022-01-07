@@ -1,19 +1,21 @@
-let sketchWidth = 600;
-let sketchHeight = 400;
-let arcDiameter = sketchHeight * 1.2;
+let sketchWidth = 1200;
+let sketchHeight = 800;
+let arcDiameter = sketchHeight * 1;
 let arcRadius = arcDiameter / 2;
-let table;
-let pair;
+let pairsTable;
+let coloursTable;
+let card;
 let x2 = 0;
 let y2 = -arcRadius;
 let target;
 let segmentTheta;
-let showGuard;
 let peak;
 let device;
+let button, button2, button3, button4;
 
 function preload() {
-  table = loadTable("pairs.csv", "csv");
+  pairsTable = loadTable("pairs.csv", "csv");
+  coloursTable = loadTable("colours.csv", "csv");
 }
 
 function setup() {
@@ -21,24 +23,43 @@ function setup() {
   background(221);
   textAlign(CENTER);
   textFont('Helvetica');
-  textSize(16);
+  textSize(20);
 
   angleMode(RADIANS);
 
-  pair = new Scale(table.getArray());
-  pair.newScale();
+  device = new Device(width / 2, 0.6 * height, arcRadius);
 
-  device = new Device(width / 2, (3 * height) / 4, arcRadius);
+  card = new Card(arcRadius, pairsTable.getArray(), coloursTable.getArray());
+  card.newScale();
 
-  showGuard = true;
   peak = false;
+
+  button = createButton('Reveal');
+  button.position(0, 0);
+  button.mousePressed(toggleScreen);
+
+  button2 = createButton('Peak');
+  button2.position(50, 0);
+  button2.mousePressed(togglePeak);
+
+  button3 = createButton('New');
+  button3.position(100, 0);
+  button3.mousePressed(newCard);
+
+  button4 = createButton('Random');
+  button4.position(150, 0);
+  button4.mousePressed(randTarget);
 }
 
 function draw() {
   background(220);
 
+  translate(width / 2, 0.6 * height);
+
   device.render();
-  device.checkScore();
+  // device.checkScore();
+
+  card.render();
 }
 
 function mouseDragged() {
@@ -49,24 +70,26 @@ function mouseClicked() {
   device.moveDial();
 }
 
-function keyPressed() {
-  if (key === "r" || key === "R") {
-    if (device.screenShown) {
-      device.reveal();
-    } else {
-      device.conceal()
-    }
+function toggleScreen() {
+  if (device.screenShown) {
+    device.reveal();
+  } else {
+    device.conceal()
   }
+}
 
-  if ((key === "p" || key === "P") && showGuard) {
-    if (peak) {
-      peak = false;
-    } else {
-      peak = true;
-    }
+function togglePeak() {
+  if (peak) {
+    peak = false;
+  } else {
+    peak = true;
   }
+}
 
-  if (key === "n" || key === "N") {
-    device.randomiseTarget();
-  }
+function randTarget() {
+  device.randomiseTarget();
+}
+
+function newCard() {
+  card.newScale();
 }

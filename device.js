@@ -19,13 +19,15 @@ class Device {
   }
 
   moveDial() {
-    let mouseTheta = atan(abs(this.yorigin - mouseY) / (mouseX - this.xorigin));
+    if (this.yorigin - mouseY > 0 && mag(this.xorigin - mouseX, this.yorigin - mouseY) < this.radius) {
+      let mouseTheta = atan(abs(this.yorigin - mouseY) / (mouseX - this.xorigin));
 
-    if (mouseTheta < 0) {
-      mouseTheta = mouseTheta + PI;
+      if (mouseTheta < 0) {
+        mouseTheta = mouseTheta + PI;
+      }
+  
+      this.dialPosition = this.theta2position(mouseTheta); 
     }
-
-    this.dialPosition = this.theta2position(mouseTheta);
   }
 
   randomiseTarget() {
@@ -104,15 +106,15 @@ class Device {
 
   render() {
 
-    translate(this.xorigin, this.yorigin);
-    
-    // Device
+    // Housing
+    noStroke();
+    fill(15, 17, 50);
+    circle(0, 0, this.radius * 2.15);
 
     // Device background arc
     noStroke();
     fill(241, 236, 226);
     arc(0, 0, this.radius * 2, this.radius * 2, PI, 0, CHORD);
-
 
     // 2 point targets
     noStroke();
@@ -170,31 +172,32 @@ class Device {
     );
 
     // Target labels
+    let labelRadiusFactor = 0.92;
+
     fill(0);
     rectMode(CENTER);
     rotate(-this.position2theta(this.targetPosition - this.targetWidth * 2) + PI/2);
-    text('2', 0, -this.radius * 0.9);
+    text('2', 0, -this.radius * labelRadiusFactor);
     rotate(this.position2theta(this.targetPosition - this.targetWidth * 2) - PI/2);
 
     rotate(-this.position2theta(this.targetPosition - this.targetWidth) + PI/2);
-    text('3', 0, -this.radius * 0.9);
+    text('3', 0, -this.radius * labelRadiusFactor);
     rotate(this.position2theta(this.targetPosition - this.targetWidth) - PI/2);
 
     rotate(-this.position2theta(this.targetPosition) + PI/2);
-    text('4', 0, -this.radius * 0.9);
+    text('4', 0, -this.radius * labelRadiusFactor);
     rotate(this.position2theta(this.targetPosition) - PI/2);
     
     rotate(-this.position2theta(this.targetPosition + this.targetWidth) + PI/2);
-    text('3', 0, -this.radius * 0.9);
+    text('3', 0, -this.radius * labelRadiusFactor);
     rotate(this.position2theta(this.targetPosition + this.targetWidth) - PI/2);
 
     rotate(-this.position2theta(this.targetPosition + this.targetWidth * 2) + PI/2);
-    text('2', 0, -this.radius * 0.9);
+    text('2', 0, -this.radius * labelRadiusFactor);
     rotate(this.position2theta(this.targetPosition + this.targetWidth * 2) - PI/2);
     rectMode(CORNER);
 
     // Screen
-
     if (this.screenRevealAnimation) {
       this.reveal();
     }
@@ -211,26 +214,17 @@ class Device {
     arc(0, 0, this.radius * 2, this.radius * 2, TWO_PI - this.position2theta(this.screenPosition), 3 * PI, PIE);
 
     // Base
-
-    fill(220);
-    rect(-width / 2, 0, width, height / 4);
-
-    // Card
-
-    fill(0);
-    rectMode(CENTER);
-    text(pair.left, -width / 4, 50, 120, 80);
-    text(pair.right, width / 4, 50, 120, 80);
-    rectMode(CORNER);
+    fill(15, 17, 50);
+    arc(0, 0, this.radius * 2.1, this.radius * 2.1, TWO_PI, PI, PIE);
 
     // Dial
-
     let mouseTheta = this.position2theta(this.dialPosition);
 
     stroke(185, 55, 59);
     strokeWeight(this.radius / 40);
     line(0, 0, this.dialLength * cos(-mouseTheta), this.dialLength * sin(-mouseTheta));
 
+    noStroke();
     fill(185, 55, 59);
     circle(0, 0, this.dialDiameter);
   }
