@@ -8,6 +8,7 @@ let pairsTable;
 let coloursTable;
 let card;
 let device;
+let board;
 let button, button2, button3, button4;
 
 function preload() {
@@ -29,6 +30,8 @@ function setup() {
   card = new Card(arcRadius, pairsTable.getArray(), coloursTable.getArray());
   card.newScale();
 
+  board = new Board(xorigin, yorigin + sketchHeight * 0.1, sketchWidth * 0.9, sketchHeight * 0.9);
+
   button = createButton('Reveal');
   button.position(0.75 * width, 0.75 * height);
   button.mousePressed(toggleScreen);
@@ -49,7 +52,7 @@ function setup() {
 function draw() {
   background(220);
 
-  translate(xorigin, yorigin);
+  board.render();
 
   device.render();
   // device.checkScore();

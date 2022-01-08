@@ -173,15 +173,53 @@ class Device {
     rectMode(CORNER);
   }
 
+  drawScoringSlots(xorigin, yorigin, radius, position) {
+    let textPositionFactor;
+    if (position == "left") {
+      textPositionFactor = -1;
+    } else {
+      textPositionFactor = 1;
+    }
+
+    let slotLength = radius * 0.25;
+    let slotSeparation = radius * 0.13;
+    for (let i = 0; i <= 10; i++) {
+      noStroke();
+      fill(3, 51, 82);
+      text(str(10 - i), xorigin + textPositionFactor * (slotLength / 2 + 40), yorigin + (i * slotSeparation) + 5);
+
+      stroke(13, 61, 92);
+      strokeWeight(15);
+      line(xorigin - slotLength / 2, yorigin + (i * slotSeparation), xorigin + slotLength / 2, yorigin + (i * slotSeparation));
+    }
+  }
+
   render() {
 
-    // Game box
-    strokeWeight(7);
-    stroke(23, 71, 102);
-    fill(43, 91, 122);
-    rectMode(CENTER);
-    rect(0, this.radius / 3, this.radius * 4, this.radius * 2.5, 10); 
-    rectMode(CORNER);
+    translate(xorigin, yorigin);
+    textSize(sketchHeight / 40);
+
+    // // Game box
+    // strokeWeight(7);
+    // stroke(23, 71, 102);
+    // fill(43, 91, 122);
+    // rectMode(CENTER);
+    // rect(0, this.radius / 3, this.radius * 4, this.radius * 2.5, 10); 
+    // rectMode(CORNER);
+
+    // // Team titles
+    // noStroke();
+    // fill(3, 51, 82);
+    // textSize(40);
+    // text("Team A", -this.radius * 1.6, -this.radius * 0.7);
+    // textSize(sketchHeight / 40);
+
+
+    // // Left scoring slots
+    // this.drawScoringSlots(-520, -50, this.radius, 'left');
+
+    // // Right scoring slots
+    // this.drawScoringSlots(520, -50, this.radius, 'right');
 
     // Wheel outer grip
     if (this.wheelAnimation) {
