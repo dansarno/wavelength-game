@@ -26,8 +26,9 @@ class Device {
   }
 
   moveDial() {
-    if (this.yorigin - mouseY > 0 && mag(this.xorigin - mouseX, this.yorigin - mouseY) < this.radius) {
-      let mouseTheta = atan(abs(this.yorigin - mouseY) / (mouseX - this.xorigin));
+    let mouseTheta = atan(abs(this.yorigin - mouseY) / (mouseX - this.xorigin));
+
+    if (this.yorigin - mouseY > 0 && mag(this.xorigin - mouseX, this.yorigin - mouseY) < this.radius && abs(mouseTheta) > 0.12) {
 
       if (mouseTheta < 0) {
         mouseTheta = mouseTheta + PI;
@@ -46,7 +47,7 @@ class Device {
 
   wheelTurning() {
     if (round(this.currentWheelPosition, 1) == round(this.newWheelPosition, 1)) {
-      this.targetPosition = random(this.targetWidth, 10 - this.targetWidth);
+      this.targetPosition = random(this.targetWidth + 0.12, 10 - this.targetWidth - 0.12);
       this.wheelAnimation = false;
       this.oldWheelPosition = this.currentWheelPosition;
     } else {
@@ -173,6 +174,14 @@ class Device {
   }
 
   render() {
+
+    // Game box
+    strokeWeight(7);
+    stroke(23, 71, 102);
+    fill(43, 91, 122);
+    rectMode(CENTER);
+    rect(0, this.radius / 3, this.radius * 4, this.radius * 2.5, 10); 
+    rectMode(CORNER);
 
     // Wheel outer grip
     if (this.wheelAnimation) {
@@ -307,6 +316,14 @@ class Device {
     vertex(0, 0);
     vertex(-this.radius * 0.87, 0);
     vertex(-this.radius * 0.87 * cos(0.12), -this.radius * 0.87 * sin(0.12));
+    endShape();
+
+    // Base stand
+    beginShape();
+    vertex(-this.radius * 0.6, 0);
+    vertex(this.radius * 0.6, 0);
+    vertex(this.radius * 0.7, this.radius * 1.3);
+    vertex(-this.radius * 0.7, this.radius * 1.3);
     endShape();
 
     // Dial

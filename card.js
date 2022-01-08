@@ -32,12 +32,12 @@ class Card {
     fill(this.leftColour);
     rect(-cardHeight / 2, cardY, cardHeight, cardHeight);
     fill(this.leftColour);
-    rect(-cardHeight / 2 - 10, cardY, cardHeight, cardHeight, 10);
+    rect(-cardHeight / 2 - 8, cardY, cardHeight, cardHeight, 10);
 
     fill(this.rightColour);
     rect(cardHeight / 2, cardY, cardHeight, cardHeight);
     fill(this.rightColour);
-    rect(cardHeight / 2 + 10, cardY, cardHeight, cardHeight, 10);
+    rect(cardHeight / 2 + 8, cardY, cardHeight, cardHeight, 10);
 
     fill(0);
     text(this.left, -cardHeight / 2, 1.5 * cardY, 120, cardHeight + 10);

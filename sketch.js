@@ -1,14 +1,12 @@
-let sketchWidth = 1200;
+let sketchWidth = 1400;
 let sketchHeight = 800;
-let arcDiameter = sketchHeight;
+let arcDiameter = sketchHeight * 0.8;
 let arcRadius = arcDiameter / 2;
+let xorigin = sketchWidth / 2;
+let yorigin = 0.5 * sketchHeight;
 let pairsTable;
 let coloursTable;
 let card;
-let x2 = 0;
-let y2 = -arcRadius;
-let target;
-let segmentTheta;
 let device;
 let button, button2, button3, button4;
 
@@ -26,23 +24,21 @@ function setup() {
 
   angleMode(RADIANS);
 
-  device = new Device(width / 2, 0.6 * height, arcRadius);
+  device = new Device(xorigin, yorigin, arcRadius);
 
   card = new Card(arcRadius, pairsTable.getArray(), coloursTable.getArray());
   card.newScale();
 
-  peak = false;
-
   button = createButton('Reveal');
-  button.position(0, 0);
+  button.position(0.75 * width, 0.75 * height);
   button.mousePressed(toggleScreen);
 
   button2 = createButton('Peak');
-  button2.position(50, 0);
+  button2.position(0.25 * width, 0.75 * height);
   button2.mousePressed(togglePeak);
 
   button3 = createButton('New');
-  button3.position(100, 0);
+  button3.position(0.5 * width, 0.9 * height);
   button3.mousePressed(newCard);
 
   button4 = createButton('Random');
@@ -53,7 +49,7 @@ function setup() {
 function draw() {
   background(220);
 
-  translate(width / 2, 0.6 * height);
+  translate(xorigin, yorigin);
 
   device.render();
   // device.checkScore();
