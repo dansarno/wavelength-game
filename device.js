@@ -86,45 +86,39 @@ class Device {
   }
 
   checkScore() {
+    let score = null;
+
     let isGreaterThanOuterTargetMin = this.targetPosition - 2.5 * this.targetWidth < this.dialPosition;
     let isLessThanOuterTargetMax = this.targetPosition - 1.5 * this.targetWidth > this.dialPosition;
     if (isGreaterThanOuterTargetMin && isLessThanOuterTargetMax) {
-      noStroke();
-      fill(0);
-      text("2", 0, 0);
+      score = 2;
     }
 
     let isGreaterThanMiddleTargetMin = this.targetPosition - 1.5 * this.targetWidth < this.dialPosition;
     let isLessThanMiddleTargetMax = this.targetPosition - 0.5 * this.targetWidth > this.dialPosition;
     if (isGreaterThanMiddleTargetMin && isLessThanMiddleTargetMax) {
-      noStroke();
-      fill(0);
-      text("3", 0, 0);
+      score = 3;
     }
 
     let isGreaterThanTargetMin = this.targetPosition - this.targetWidth/2 < this.dialPosition;
     let isLessThanTargetMax = this.targetPosition + this.targetWidth/2 > this.dialPosition;
     if (isGreaterThanTargetMin && isLessThanTargetMax) {
-      noStroke();
-      fill(0);
-      text("4", 0, 0);
+      score = 4;
     }
 
     isGreaterThanMiddleTargetMin = this.targetPosition + 0.5 * this.targetWidth < this.dialPosition;
     isLessThanMiddleTargetMax = this.targetPosition + 1.5 * this.targetWidth > this.dialPosition;
     if (isGreaterThanMiddleTargetMin && isLessThanMiddleTargetMax) {
-      noStroke();
-      fill(0);
-      text("3", 0, 0);
+      score = 3;
     }
 
     isGreaterThanOuterTargetMin = this.targetPosition + 1.5 * this.targetWidth < this.dialPosition;
     isLessThanOuterTargetMax = this.targetPosition + 2.5 * this.targetWidth > this.dialPosition;
     if (isGreaterThanOuterTargetMin && isLessThanOuterTargetMax) {
-      noStroke();
-      fill(0);
-      text("2", 0, 0);
+      score = 2;
     }
+
+    return score;
   }
 
   theta2position(theta) {

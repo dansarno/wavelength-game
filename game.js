@@ -1,3 +1,61 @@
+class WavelengthGame {
+  constructor(device, teamA, teamB) {
+    this.device = device;
+    this.teamA = teamA;
+    this.teamB = teamB;
+    this.turn = teamA;
+    this.winner = null;
+  }
+
+  makeGuess() {
+    let newScore = this.device.checkScore();
+    this.turn.score += newScore;
+    if (this.turn.score >= 10) {
+      this.winner = this.turn;
+      this.turn.score = 10;
+      this.endGame();
+    } else {
+      this.nextTurn();
+    }
+  }
+
+  nextTurn() {
+    if (this.turn == this.teamA) {
+      this.turn = this.teamB;
+    } else {
+      this.turn = this.teamA;
+    }
+  }
+
+  render() {
+    if (this.winner != null) {
+      textSize(100);
+      noStroke();
+      fill(0);
+      text(`${this.turn.name} Wins!!!`, 0, 0)
+    }
+  }
+
+  endGame() {
+    textSize(100);
+    noStroke();
+    fill(0);
+    text(`${this.turn.name} Wins!!!`)
+  }
+
+}
+
+class Team {
+  constructor(name) {
+    this.name = name;
+    this.score = 0;
+  }
+
+  reset() {
+    this.score = 0;
+  }
+}
+
 class Board {
   constructor(x, y, w, h) {
     this.xorigin = x;
@@ -19,15 +77,16 @@ class Board {
     noStroke();
     fill(3, 51, 82);
     textSize(this.height / 15);
-    text("Team A", this.xorigin - this.width * 0.4, this.yorigin - this.height * 0.4);
-    text("Team B", this.xorigin + this.width * 0.4, this.yorigin - this.height * 0.4);
+    text("Left Brain", this.xorigin - this.width * 0.38, this.yorigin - this.height * 0.4);
+    text("Right Brain", this.xorigin + this.width * 0.38, this.yorigin - this.height * 0.4);
 
     textSize(this.height / 35);
+
     // Left scoring slots
-    this.drawScoringSlots(this.xorigin - this.width * 0.41, this.yorigin - this.height * 0.1, this.width * 0.06, this.height * 0.05, this.height * 0.02, this.width * 0.03, 'left');
+    this.drawScoringSlots(this.xorigin - this.width * 0.41, this.yorigin - this.height * 0.1, this.width * 0.04, this.height * 0.05, this.height * 0.02, this.width * 0.03, 'left');
 
     // Right scoring slots
-    this.drawScoringSlots(this.xorigin + this.width * 0.41, this.yorigin - this.height * 0.1, this.width * 0.06, this.height * 0.05, this.height * 0.02, this.width * 0.03, 'right');
+    this.drawScoringSlots(this.xorigin + this.width * 0.41, this.yorigin - this.height * 0.1, this.width * 0.04, this.height * 0.05, this.height * 0.02, this.width * 0.03, 'right');
   }
 
   drawScoringSlots(xorigin, yorigin, slotLength, slotSeparation, thickness, textOffset, position) {
@@ -49,3 +108,4 @@ class Board {
     }
   }
 }
+

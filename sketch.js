@@ -9,11 +9,17 @@ let coloursTable;
 let card;
 let device;
 let board;
-let button, button2, button3, button4;
+let button2, button3, button4, button5;
+let token1, token2, guessingToken;
+let game, teamA, teamB;
+let isNextGo = false;
 
 function preload() {
   pairsTable = loadTable("pairs.csv", "csv");
   coloursTable = loadTable("colours.csv", "csv");
+  token1 = loadImage('assets/token_1.png');
+  token2 = loadImage('assets/token_2.png');
+  guessingToken = loadImage('assets/guessing_token.png');
 }
 
 function setup() {
@@ -27,14 +33,15 @@ function setup() {
 
   device = new Device(xorigin, yorigin, arcRadius);
 
+  teamA = new Team('Left Brain');
+  teamB = new Team('Right Brain');
+
+  game = new WavelengthGame(device, teamA, teamB);
+
   card = new Card(arcRadius, pairsTable.getArray(), coloursTable.getArray());
   card.newScale();
 
   board = new Board(xorigin, yorigin + sketchHeight * 0.1, sketchWidth * 0.9, sketchHeight * 0.9);
-
-  button = createButton('Reveal');
-  button.position(0.75 * width, 0.75 * height);
-  button.mousePressed(toggleScreen);
 
   button2 = createButton('Peak');
   button2.position(0.25 * width, 0.75 * height);
@@ -45,8 +52,12 @@ function setup() {
   button3.mousePressed(newCard);
 
   button4 = createButton('Random');
-  button4.position(150, 0);
+  button4.position(400, 120);
   button4.mousePressed(randTarget);
+
+  button5 = createButton('Guess');
+  button5.position(0.75 * width, 0.75 * height);
+  button5.mousePressed(guess);
 }
 
 function draw() {
@@ -55,9 +66,14 @@ function draw() {
   board.render();
 
   device.render();
-  // device.checkScore();
 
   card.render();
+
+  game.render();
+
+  image(token1, 455, -120, 108, 180);
+  image(token2, -560, 180, 108, 180);
+  image(guessingToken, -400, 180, 60, 180);
 }
 
 function mouseDragged() {
@@ -68,20 +84,26 @@ function mouseClicked() {
   device.moveDial();
 }
 
-function toggleScreen() {
-  if (device.screenShown) {
-    device.reveal();
-  } else {
-    device.conceal()
-  }
-}
-
 function togglePeak() {
   if (device.peak) {
     device.peak = false;
   } else {
     device.peak = true;
   }
+}
+
+function guess() {
+  if (isNextGo == false) {
+    device.reveal();
+    game.makeGuess();
+    isNextGo = true;
+    button5.html('Next Go');
+  } else {
+    button5.html('Guess');
+    device.randomiseTarget();
+    card.newScale();
+    isNextGo = false;
+  } 
 }
 
 function randTarget() {
