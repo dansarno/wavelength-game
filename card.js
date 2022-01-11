@@ -1,6 +1,9 @@
 class Card {
-  constructor(r, tableArray, colours) {
-    this.deviceRadius = r;
+  constructor(x, y, w, h, tableArray, colours) {
+    this.xorigin = x;
+    this.yorigin = y;
+    this.width = w;
+    this.height = h;
     this.pairs = tableArray;
     this.colours = colours;
     this.left = null;
@@ -26,30 +29,32 @@ class Card {
     rectMode(CENTER);
     noStroke();
 
-    let cardHeight = 0.2 * height;
-    let cardY = (this.deviceRadius * 0.25) + (cardHeight / 2);
-
+    // LHS
     fill(this.leftColour);
-    rect(-cardHeight / 2, cardY, cardHeight, cardHeight);
+    rect(this.xorigin - this.width / 2, this.yorigin, this.width, this.height);
     fill(this.leftColour);
-    rect(-cardHeight / 2 - 8, cardY, cardHeight, cardHeight, 10);
+    rect(this.xorigin - this.width / 2 - 5, this.yorigin, this.width, this.height, 7);
 
+    // RHS
     fill(this.rightColour);
-    rect(cardHeight / 2, cardY, cardHeight, cardHeight);
+    rect(this.xorigin + this.width / 2, this.yorigin, this.width, this.height);
     fill(this.rightColour);
-    rect(cardHeight / 2 + 8, cardY, cardHeight, cardHeight, 10);
+    rect(this.xorigin + this.width / 2 + 5, this.yorigin, this.width, this.height, 7);
 
+    // Text
     fill(0);
-    text(this.left, -cardHeight / 2, 1.5 * cardY, 120, cardHeight + 10);
-    text(this.right, cardHeight / 2, 1.5 * cardY, 120, cardHeight + 10);
+    text(this.left, this.xorigin - this.width / 2, this.yorigin + this.height * 0.45, this.width * 0.8, this.height + 10);
+    text(this.right, this.xorigin + this.width * 0.55, this.yorigin + this.height * 0.45, this.width * 0.8, this.height + 10);
     rectMode(CORNER);
 
-    let v0 = createVector(-cardY * 0.3, cardY * 0.8);
-    let v1 = createVector(-cardHeight / 2, 0);
+    // Left arrow
+    let v0 = createVector(this.xorigin - this.width * 0.32, this.yorigin - this.height * 0.28);
+    let v1 = createVector(-this.width * 0.4, 0);
     this.#drawArrow(v0, v1);
     
-    let v2 = createVector(cardY * 0.3, cardY * 0.8);
-    let v3 = createVector(cardHeight / 2, 0);
+    // Right arrow
+    let v2 = createVector(this.xorigin + this.width * 0.32, this.yorigin - this.height * 0.28);
+    let v3 = createVector(this.height * 0.4, 0);
     this.#drawArrow(v2, v3);
   }
 

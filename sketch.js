@@ -38,7 +38,7 @@ function setup() {
 
   game = new WavelengthGame(device, teamA, teamB);
 
-  card = new Card(arcRadius, pairsTable.getArray(), coloursTable.getArray());
+  card = new Card(0, height * 0.3, height * 0.2, height * 0.2, pairsTable.getArray(), coloursTable.getArray());
   card.newScale();
 
   board = new Board(xorigin, yorigin + sketchHeight * 0.1, sketchWidth * 0.9, sketchHeight * 0.9);
