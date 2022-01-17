@@ -14,8 +14,6 @@ class WavelengthGame {
       this.winner = this.turn;
       this.turn.score = 10;
       this.endGame();
-    } else {
-      this.nextTurn();
     }
   }
 
@@ -57,7 +55,8 @@ class Team {
 }
 
 class Board {
-  constructor(x, y, w, h) {
+  constructor(game, x, y, w, h) {
+    this.game = game;
     this.xorigin = x;
     this.yorigin = y;
     this.width = w;
@@ -70,7 +69,7 @@ class Board {
     // Game box
     strokeWeight(7);
     stroke(23, 71, 102);
-    fill(43, 91, 122);
+    fill(63, 111, 142);
     rect(this.xorigin, this.yorigin, this.width, this.height, 10); 
 
     // Team titles
@@ -87,6 +86,20 @@ class Board {
 
     // Right scoring slots
     this.drawScoringSlots(this.xorigin + this.width * 0.41, this.yorigin - this.height * 0.1, this.width * 0.04, this.height * 0.05, this.height * 0.02, this.width * 0.03, 'right');
+
+    // Left token
+    image(token2, 135, height * 0.74 - this.game.teamA.score * 37, 108, 180);
+
+    // Right token
+    image(token1, 1155, height * 0.74 - this.game.teamB.score * 37, 108, 180);
+
+    // // Guessing token
+    // let rightPositionDelta = 0;
+    // if (this.game.turn === this.game.teamB) {
+    //   rightPositionDelta = 800;
+    // }
+    // image(guessingToken, 300 + rightPositionDelta, height - 200, 50, 150);
+
   }
 
   drawScoringSlots(xorigin, yorigin, slotLength, slotSeparation, thickness, textOffset, position) {

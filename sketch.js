@@ -41,7 +41,7 @@ function setup() {
   card = new Card(0, height * 0.3, height * 0.2, height * 0.2, pairsTable.getArray(), coloursTable.getArray());
   card.newScale();
 
-  board = new Board(xorigin, yorigin + sketchHeight * 0.1, sketchWidth * 0.9, sketchHeight * 0.9);
+  board = new Board(game, xorigin, yorigin + sketchHeight * 0.1, sketchWidth * 0.9, sketchHeight * 0.9);
 
   button2 = createButton('Peak');
   button2.position(0.25 * width, 0.75 * height);
@@ -61,19 +61,12 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+  background(255);
 
   board.render();
-
   device.render();
-
   card.render();
-
   game.render();
-
-  image(token1, 455, -120, 108, 180);
-  image(token2, -560, 180, 108, 180);
-  image(guessingToken, -400, 180, 60, 180);
 }
 
 function mouseDragged() {
@@ -103,6 +96,7 @@ function guess() {
     device.randomiseTarget();
     card.newScale();
     isNextGo = false;
+    game.nextTurn();
   } 
 }
 

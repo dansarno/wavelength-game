@@ -6,7 +6,7 @@ class Device {
 
     this.dialPosition = 5;
     this.dialLength = 0.8 * r;
-    this.dialDiameter = 0.35 * r;
+    this.dialDiameter = 0.42 * r;
 
     this.targetWidth = 0.4;
     this.targetPosition = random(this.targetWidth, 10 - this.targetWidth);
@@ -28,7 +28,10 @@ class Device {
   moveDial() {
     let mouseTheta = atan(abs(this.yorigin - mouseY) / (mouseX - this.xorigin));
 
-    if (this.yorigin - mouseY > 0 && mag(this.xorigin - mouseX, this.yorigin - mouseY) < this.radius && abs(mouseTheta) > 0.12) {
+    if (this.yorigin - mouseY > 0 && 
+        mag(this.xorigin - mouseX, this.yorigin - mouseY) < this.radius && 
+        mag(this.xorigin - mouseX, this.yorigin - mouseY) > this.dialDiameter / 2 && 
+        abs(mouseTheta) > 0.12) {
 
       if (mouseTheta < 0) {
         mouseTheta = mouseTheta + PI;
@@ -159,8 +162,8 @@ class Device {
     rectMode(CENTER);
     let handleLength = handleWidth * 5;
 
-    stroke(100);
-    strokeWeight(0.3);
+    stroke(100, 142, 150);
+    strokeWeight(2);
     fill(120, 162, 170);
     rect(xorigin + radius + handleLength / 4, yorigin - handleWidth / 2, handleLength, handleWidth, 30);
     noStroke();
@@ -193,28 +196,6 @@ class Device {
     translate(xorigin, yorigin);
     textSize(sketchHeight / 40);
 
-    // // Game box
-    // strokeWeight(7);
-    // stroke(23, 71, 102);
-    // fill(43, 91, 122);
-    // rectMode(CENTER);
-    // rect(0, this.radius / 3, this.radius * 4, this.radius * 2.5, 10); 
-    // rectMode(CORNER);
-
-    // // Team titles
-    // noStroke();
-    // fill(3, 51, 82);
-    // textSize(40);
-    // text("Team A", -this.radius * 1.6, -this.radius * 0.7);
-    // textSize(sketchHeight / 40);
-
-
-    // // Left scoring slots
-    // this.drawScoringSlots(-520, -50, this.radius, 'left');
-
-    // // Right scoring slots
-    // this.drawScoringSlots(520, -50, this.radius, 'right');
-
     // Wheel outer grip
     if (this.wheelAnimation) {
       this.wheelTurning();
@@ -226,6 +207,13 @@ class Device {
     noStroke();
     fill(15, 17, 50);
     circle(0, 0, this.radius * 2.15);
+
+    // Housing reflections
+    noFill();
+    stroke(200);
+    strokeWeight(this.radius / 150);
+    arc(0, 0, this.radius * 2.11, this.radius * 2.11, PI * 0.95, PI * 1.1);
+    arc(0, 0, this.radius * 2.11, this.radius * 2.11, PI * 1.95, PI * 2.1);
 
     // Wheel inner arc
     noStroke();
@@ -368,5 +356,24 @@ class Device {
     noStroke();
     fill(185, 55, 59);
     circle(0, 0, this.dialDiameter);
+
+    fill(135, 5, 9);
+    textSize(28);
+    text("GUESS", 0, 10);
+
+    // Dial reflections
+    noFill();
+    stroke(200);
+    strokeWeight(this.radius / 120);
+    arc(0, 0, this.dialDiameter * 0.9, this.dialDiameter * 0.9, PI * 0.85, PI * 1.2);
+    arc(0, 0, this.dialDiameter * 0.9, this.dialDiameter * 0.9, PI * 1.85, PI * 2.2);
+
+    // BUTTONS
+
+    // Peak
+    fill(200);
+    stroke(100);
+    strokeWeight(8);
+    circle(-200, 80, 80);
   }
 }
