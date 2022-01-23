@@ -10,6 +10,7 @@ class Card {
     this.leftColour = null;
     this.right = null;
     this.rightColour = null;
+    this.mouseOnNew = false;
   }
 
   newScale() {
@@ -28,6 +29,23 @@ class Card {
   render() {
     rectMode(CENTER);
     noStroke();
+    textSize(sketchHeight / 40);
+
+    // New button
+    if (this.mouseOnNew) {
+      fill(65, 67, 100);
+    } else {
+      fill(45, 47, 80);
+    }
+    this.newButtonX = this.xorigin + this.width * 0.75;
+    this.newButtonY = this.yorigin + this.height * 0.6;
+    this.newButtonW = this.width / 2;
+    this.newButtonH = this.height / 4;
+    rect(this.xorigin + this.width * 0.75, this.yorigin + this.height * 0.6, this.width / 2, this.height / 4, 10);
+
+    textSize(18);
+    fill(150);
+    text("NEW", this.xorigin + this.width * 0.75, this.yorigin + this.height * 0.65);
 
     // LHS
     fill(this.leftColour);

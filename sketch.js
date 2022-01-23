@@ -9,7 +9,6 @@ let coloursTable;
 let card;
 let device;
 let board;
-let button2, button3, button4, button5;
 let token1, token2, guessingToken;
 let game, teamA, teamB;
 let isNextGo = false;
@@ -42,22 +41,6 @@ function setup() {
   card.newScale();
 
   board = new Board(game, xorigin, yorigin + sketchHeight * 0.1, sketchWidth * 0.9, sketchHeight * 0.9);
-
-  button2 = createButton('Peak');
-  button2.position(0.25 * width, 0.75 * height);
-  button2.mousePressed(togglePeak);
-
-  button3 = createButton('New');
-  button3.position(0.5 * width, 0.9 * height);
-  button3.mousePressed(newCard);
-
-  button4 = createButton('Random');
-  button4.position(400, 120);
-  button4.mousePressed(randTarget);
-
-  button5 = createButton('Guess');
-  button5.position(0.75 * width, 0.75 * height);
-  button5.mousePressed(guess);
 }
 
 function draw() {
@@ -67,14 +50,56 @@ function draw() {
   device.render();
   card.render();
   game.render();
+
+  mouseOver();
 }
 
 function mouseDragged() {
   device.moveDial();
 }
 
+function mouseOver() {
+  if (mag(xorigin - mouseX, yorigin - mouseY) < device.dialRadius) {
+    device.mouseOnDial = true;
+  } else {
+    device.mouseOnDial = false;
+  }
+
+  if (mag(xorigin + device.peakX - mouseX, yorigin + device.peakY - mouseY) < device.peakDiameter / 2) {
+    device.mouseOnPeak = true;
+  } else {
+    device.mouseOnPeak = false;
+  }
+
+  if (mouseX > xorigin + card.newButtonX - card.newButtonW / 2 && 
+      mouseX < xorigin + card.newButtonX + card.newButtonW / 2 && 
+      mouseY > yorigin + card.newButtonY - card.newButtonH / 2 &&
+      mouseY < yorigin + card.newButtonY + card.newButtonH / 2
+      ) {
+    card.mouseOnNew = true;
+  } else {
+    card.mouseOnNew = false;
+  }
+}
+
 function mouseClicked() {
   device.moveDial();
+
+  if (mag(xorigin - mouseX, yorigin - mouseY) < device.dialRadius) {
+    guess();
+  }
+
+  if (mag(xorigin + device.peakX - mouseX, yorigin + device.peakY - mouseY) < device.peakDiameter / 2) {
+    togglePeak();
+  }
+
+  if (mouseX > xorigin + card.newButtonX - card.newButtonW / 2 && 
+    mouseX < xorigin + card.newButtonX + card.newButtonW / 2 && 
+    mouseY > yorigin + card.newButtonY - card.newButtonH / 2 &&
+    mouseY < yorigin + card.newButtonY + card.newButtonH / 2
+    ) {
+    card.newScale();
+}
 }
 
 function togglePeak() {
@@ -86,24 +111,20 @@ function togglePeak() {
 }
 
 function guess() {
-  if (isNextGo == false) {
-    device.reveal();
-    game.makeGuess();
-    isNextGo = true;
-    button5.html('Next Go');
-  } else {
-    button5.html('Guess');
-    device.randomiseTarget();
-    card.newScale();
-    isNextGo = false;
-    game.nextTurn();
-  } 
+  if (!device.screenRevealAnimation && !device.screenConcealAnimation) {
+    if (isNextGo == false) {
+      device.reveal();
+      game.makeGuess();
+      isNextGo = true;
+    } else {
+      device.randomiseTarget();
+      card.newScale();
+      isNextGo = false;
+      game.nextTurn();
+    } 
+  }
 }
 
 function randTarget() {
   device.randomiseTarget();
-}
-
-function newCard() {
-  card.newScale();
 }

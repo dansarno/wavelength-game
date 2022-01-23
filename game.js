@@ -27,10 +27,16 @@ class WavelengthGame {
 
   render() {
     if (this.winner != null) {
+      rectMode(CENTER);
+      fill(200);
+      strokeWeight(10);
+      stroke(50);
+      rect(0, 0, 1000, 200, 50);
+
       textSize(100);
       noStroke();
-      fill(0);
-      text(`${this.turn.name} Wins!!!`, 0, 0)
+      fill(15, 17, 50);
+      text(`${this.turn.name} Wins!!!`, 0, 30)
     }
   }
 
@@ -73,10 +79,23 @@ class Board {
     rect(this.xorigin, this.yorigin, this.width, this.height, 10); 
 
     // Team titles
-    noStroke();
     fill(3, 51, 82);
     textSize(this.height / 15);
+
+    if (this.game.turn === this.game.teamA) {
+      strokeWeight(4);
+      stroke(128, 170, 178);
+    } else {
+      noStroke();
+    }
     text("Left Brain", this.xorigin - this.width * 0.38, this.yorigin - this.height * 0.4);
+    
+    if (this.game.turn === this.game.teamB) {
+      strokeWeight(4);
+      stroke(128, 170, 178);
+    } else {
+      noStroke();
+    }
     text("Right Brain", this.xorigin + this.width * 0.38, this.yorigin - this.height * 0.4);
 
     textSize(this.height / 35);
@@ -88,10 +107,10 @@ class Board {
     this.drawScoringSlots(this.xorigin + this.width * 0.41, this.yorigin - this.height * 0.1, this.width * 0.04, this.height * 0.05, this.height * 0.02, this.width * 0.03, 'right');
 
     // Left token
-    image(token2, 135, height * 0.74 - this.game.teamA.score * 37, 108, 180);
+    image(token2, 135, height * 0.815 - this.game.teamA.score * 36, 108, 120);
 
     // Right token
-    image(token1, 1155, height * 0.74 - this.game.teamB.score * 37, 108, 180);
+    image(token1, 1155, height * 0.815 - this.game.teamB.score * 36, 108, 120);
 
     // // Guessing token
     // let rightPositionDelta = 0;
@@ -113,6 +132,16 @@ class Board {
     for (let i = 0; i <= 10; i++) {
       noStroke();
       fill(3, 51, 82);
+      if (position == "left" && this.game.teamA.score === 10 - i) {
+        strokeWeight(2);
+        stroke(3, 51, 82);
+      }
+
+      if (position == "right" && this.game.teamB.score === 10 - i) {
+        strokeWeight(2);
+        stroke(3, 51, 82);
+      }
+
       text(str(10 - i), xorigin + textPositionFactor * (slotLength / 2 + textOffset), yorigin + (i * slotSeparation) + 5);
 
       stroke(0, 48, 79);

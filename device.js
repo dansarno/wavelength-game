@@ -4,9 +4,11 @@ class Device {
     this.yorigin = y;
     this.radius = r;
 
+
+    this.dialRadius = r * 0.21;
     this.dialPosition = 5;
     this.dialLength = 0.8 * r;
-    this.dialDiameter = 0.42 * r;
+    this.dialDiameter = this.dialRadius * 2;
 
     this.targetWidth = 0.4;
     this.targetPosition = random(this.targetWidth, 10 - this.targetWidth);
@@ -23,6 +25,13 @@ class Device {
     this.currentWheelPosition = 0;
     this.oldWheelPosition = 0;
     this.wheelAnimation = false;
+
+    this.peakX = -200;
+    this.peakY = 80;
+    this.peakDiameter = 80;
+
+    this.mouseOnDial = false;
+    this.mouseOnPeak = false;
   }
 
   moveDial() {
@@ -353,13 +362,24 @@ class Device {
     strokeWeight(this.radius / 40);
     line(0, 0, this.dialLength * cos(-mouseTheta), this.dialLength * sin(-mouseTheta));
 
+    if (this.mouseOnDial === true) {
+      fill(205, 75, 79);
+    } else {
+      fill(185, 55, 59);
+    }
     noStroke();
-    fill(185, 55, 59);
     circle(0, 0, this.dialDiameter);
 
+    rectMode(CENTER);
     fill(135, 5, 9);
     textSize(28);
-    text("GUESS", 0, 10);
+    if (!this.screenRevealAnimation && !this.screenConcealAnimation) {
+      if (this.screenShown === true) {
+        text("GUESS", 0, 10);
+      } else {
+        text("NEXT GO", 5, 10, 70, 80);
+      }
+    }
 
     // Dial reflections
     noFill();
@@ -371,9 +391,16 @@ class Device {
     // BUTTONS
 
     // Peak
-    fill(200);
-    stroke(100);
-    strokeWeight(8);
-    circle(-200, 80, 80);
+    if (this.mouseOnPeak) {
+      fill(65, 67, 100);
+    } else {
+      fill(45, 47, 80);
+    }
+    noStroke();
+    circle(this.peakX, this.peakY, this.peakDiameter);
+
+    textSize(18);
+    fill(150);
+    text("PEAK", -200, 85);
   }
 }
