@@ -2,14 +2,158 @@
 <html lang="en">
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js" integrity="sha512-N4kV7GkNv7QR7RX9YF/olywyIgIwNvfEe2nZtfyj73HdjCUkAfOBDbcuJ/cTaN04JKRnw1YG1wnUyNKMsNgg3g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
     <meta charset="utf-8" />
 
-  </head>
-  <body>
     <script src="sketch.js"></script>
     <script src="card.js"></script>
     <script src="device.js"></script>
     <script src="game.js"></script>
+  </head>
+  <body>
+    <main>
+      <div class="container pt-4">
+        <!-- Button trigger modal -->
+        <button id="help-button" type="button" class="btn btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          ?
+        </button>
+      </div>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Welcome to the Wavelength Game!</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <h5>Game Summary</h5>
+              <p>Wavelength is a social guessing game where two teams compete to read each other’s minds.
+                Teams take turns rotating a dial to where they think a target is located along a spectrum 
+                that’s hidden behind a screen. One player from the active team&mdash;the Psychic&mdash;knows where the 
+                target is, but can only give a clue ON THE SPECTRUM between two opposing concepts. After 
+                that, their teammates have to guess where the target is.
+              </p>
+              
+              <h5>Setup Notes</h5>
+              <p>
+                Divide into 2 teams of roughly the same size. Then decide who on those teams will be the 
+                Psychics (clue givers) for the first round. We call the teams Left Brain and Right Brain.
+              </p>
+
+              <h5>Psychic Phase</h5>
+              <p>Each round begins with the current team’s Psychic drawing a wavelength card and giving 
+                a clue ON THE SPECTRUM between the two concepts on the card. The Psychic should do this 
+                secretly, so players on both teams can’t see where the target is. Here’s the order the Psychic
+                should go in:
+                <ol>
+                  <li>
+                    Choose a wavelength: Draw 1 wavelength card. Don’t think too hard about it: just pick 
+                    the one you find most interesting! Read the card text so both teams can hear.
+                  </li>
+                  <li>
+                    Peak at the screen: Using the PEAK button, peak and look at where the target is located 
+                    while ALL players from both teams are looking away. Only you the Pyschic should see where the target it.
+                    When you have memorised the target's location, click the PEAK button again to cover the screen
+                    and allow all players to view the board again.
+                  </li>
+                  <li>
+                    Give a clue: Look at where the target’s centre is located spatially along the visible 
+                    area of the wheel. Now think of a clue that is conceptually where the target is located 
+                    ON THE SPECTRUM between the two concepts on your card. Rules for how to give clues can be found below.
+                  </li>
+                </ol>
+                Now the Psychic stops communicating ENTIRELY!
+
+                After the Psychic has given their clue, they are no longer allowed to say ANYTHING&mdash;not even 
+                clarifications&mdash;and must keep an entirely straight face. If a Psychic ever gives away the target 
+                location after giving their clue, either verbally or nonverbally, it’s up to everyone playing 
+                to decide whether to penalize the team. We tend to just let the Psychic give a new clue with a 
+                new card and target location, but we’re generous that way.
+              </p>
+
+              <h5>Team Phase</h5>
+              <p>
+                After the Psychic gives their clue, it’s up to the rest of their team to READ THEIR MIND 
+                and turn the dial as close to the center of the target area as they can. This is the core of the game 
+                and it is almost entirely free of rules: teammates can discuss, debate, and argue in any way they like.
+                After the Psychic’s team has come to an agreement, they let the other team know that they’ve finalised 
+                their dial position.
+              </p>
+
+              <h5>Left/Right Phase</h5>
+              <p>
+                In Wavelength, BOTH teams always have a chance to score points from a clue. After the Psychic’s team 
+                has finalised their dial position, the other team gets to guess whether the centre of the target is 
+                to the left or right of the dial. This discussion should be fairly brief, since it’s a simple binary 
+                choice: LEFT or RIGHT. The team makes their guess by placing the marker in either the LEFT or RIGHT 
+                slot next to the wavelength card. For example, if the card was HOT|COLD and the team guessed LEFT, 
+                it would indicate they think the Psychic meant to convey something MORE HOT than the current team guessed.
+              </p>
+
+              <h5>Scoring Phase</h5>
+              <p>
+                Once both teams have finalised their guesses, it’s time for the most exciting part of the game: THE REVEAL.
+                The Psychic clicks the GUESS button in the centre of the dial to reveal the target. Their team scores points 
+                if the dial is within the colored target area, as listed on the colored wedges (2-4 points). The other team 
+                scores 1 point if they correctly guessed whether the target is to the left or right of the final dial position. 
+                If the Psychic’s team guessed perfectly (the 4 point wedge), the other team cannot score.
+              </p>
+
+              <h5>How the Game Progresses</h5>
+              <p>PSYCHIC PHASE: Current team’s Psychic gives clue. TEAM PHASE: Psychic’s team discusses and turns dial. 
+                LEFT/RIGHT PHASE: Other team guesses left/right. SCORING: Psychic reveals target and points are given.
+                Play continues like this, with teams take turns giving clues, with a new player being the Psychic each time.
+              </p>
+
+              <h5>Winning</h5>
+              <p>
+                Once a team has reached 10 points, the game ends—and the team with the highest score wins! If there’s a 
+                tie, each team takes a final sudden death turn. The team that scores the most points that round wins 
+                (including the LEFT/RIGHT guess). If there’s still a tie, repeat until a team has won.
+              </p>
+
+              <h5>Clue Giving Rules</h5>
+              <p>
+                Wavelength is all about wildly creative clues. So we tried to give players as much freedom as possible 
+                to do that. These rules are here only to restrict clue giving methods that frequently broke the game&mdash;feel 
+                free to adapt them to whatever works best for you and your friends.
+                <ol>
+                  <li>
+                    Convey a single thought: A clue shouldn’t combine multiple ideas or give a lot of explanatory context. 
+                    Words like “AND,” “BUT,” “WHILE,” “WHO,” and “WHEN” are some- times OK, but not when they basically 
+                    combine two clues together. A dead giveaway is a team debating one part of the clue, then debating 
+                    the other part, and figuring out how to weigh both.
+                  </li>
+                  <li>
+                    Don’t “invent” something: The clue must exist as a thing in the universe outside of you giving the clue. 
+                    It can be fictional, just not something you’re making up exclusively for this situation.
+                  </li>
+                  <li>
+                    Be on topic: Your clue has to be related to the concepts on this round’s card. You aren’t allowed to 
+                    use one side as a double meaning, e.g. “hot” meaning attractive.
+                  </li>
+                  <li>
+                    Don’t use the words on the card or any synonyms: You can’t use words from the same “family” as those on the card.
+                  </li>
+                  <li>
+                    No numbers: You can’t use numbers, percentages, ratios, or anything numeric to sneakily suggest the location of the target.
+                    If a number is in the proper name of a thing, that’s OK.
+                  </li>
+                </ol>
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="sketch-container"></div>
+    </main>
   </body>
 </html>

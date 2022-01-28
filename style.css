@@ -5,3 +5,17 @@ html, body {
 canvas {
   display: block;
 }
+
+main {
+  position: relative;
+}
+
+#help-button {
+  position: absolute;
+  z-index: 110;
+}
+
+#sketch-container {
+  position: absolute;
+  z-index: 100;
+}

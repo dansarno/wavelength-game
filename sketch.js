@@ -22,7 +22,9 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(sketchWidth, sketchHeight);
+  let canvas = createCanvas(sketchWidth, sketchHeight);
+  canvas.parent('sketch-container');
+  
   background(221);
   textAlign(CENTER);
   textFont('Helvetica');
