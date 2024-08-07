@@ -401,6 +401,6 @@ class Device {
 
     textSize(18);
     fill(150);
-    text("PEAK", -200, 85);
+    text("PEEK", -200, 85);
   }
 }
