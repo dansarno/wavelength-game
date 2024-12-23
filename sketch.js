@@ -67,10 +67,22 @@ function mouseOver() {
     device.mouseOnDial = false;
   }
 
-  if (mag(xorigin + device.peakX - mouseX, yorigin + device.peakY - mouseY) < device.peakDiameter / 2) {
-    device.mouseOnPeak = true;
+  if (mag(xorigin + device.peekX - mouseX, yorigin + device.peekY - mouseY) < device.peekDiameter / 2) {
+    device.mouseOnPeek = true;
   } else {
-    device.mouseOnPeak = false;
+    device.mouseOnPeek = false;
+  }
+
+  if (mag(xorigin + device.leftButtonX - mouseX, yorigin + device.leftButtonY - mouseY) < device.leftButtonDiameter / 2) {
+    device.mouseOnLeft = true;
+  } else {
+    device.mouseOnLeft = false;
+  }
+
+  if (mag(xorigin + device.rightButtonX - mouseX, yorigin + device.rightButtonY - mouseY) < device.rightButtonDiameter / 2) {
+    device.mouseOnRight = true;
+  } else {
+    device.mouseOnRight = false;
   }
 
   if (mouseX > xorigin + card.newButtonX - card.newButtonW / 2 && 
@@ -91,8 +103,22 @@ function mouseClicked() {
     guess();
   }
 
-  if (mag(xorigin + device.peakX - mouseX, yorigin + device.peakY - mouseY) < device.peakDiameter / 2) {
-    togglePeak();
+  if (mag(xorigin + device.peekX - mouseX, yorigin + device.peekY - mouseY) < device.peekDiameter / 2) {
+    togglePeek();
+  }
+
+  if (mag(xorigin + device.leftButtonX - mouseX, yorigin + device.leftButtonY - mouseY) < device.leftButtonDiameter / 2) {
+    if (!device.leftSelected) {
+      device.leftSelected = true;
+      device.rightSelected = false;
+    }
+  }
+
+  if (mag(xorigin + device.rightButtonX - mouseX, yorigin + device.rightButtonY - mouseY) < device.rightButtonDiameter / 2) {
+    if (!device.rightSelected) {
+      device.leftSelected = false;
+      device.rightSelected = true;
+    }
   }
 
   if (mouseX > xorigin + card.newButtonX - card.newButtonW / 2 && 
@@ -104,11 +130,11 @@ function mouseClicked() {
 }
 }
 
-function togglePeak() {
-  if (device.peak) {
-    device.peak = false;
+function togglePeek() {
+  if (device.peek) {
+    device.peek = false;
   } else {
-    device.peak = true;
+    device.peek = true;
   }
 }
 

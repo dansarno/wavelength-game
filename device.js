@@ -14,7 +14,7 @@ class Device {
     this.targetPosition = random(this.targetWidth, 10 - this.targetWidth);
 
     this.screenShown = true;
-    this.peak = false;
+    this.peek = false;
     this.screenPosition = 0;
     // this.screenSpeed = 0.04; // rad/frame
     this.screenRevealAnimation = false;
@@ -26,12 +26,26 @@ class Device {
     this.oldWheelPosition = 0;
     this.wheelAnimation = false;
 
-    this.peakX = -200;
-    this.peakY = 80;
-    this.peakDiameter = 80;
+    this.peekX = -200;
+    this.peekY = 80;
+    this.peekDiameter = 80;
+
+    this.leftButtonX = -this.radius;
+    this.leftButtonY = this.radius;
+    this.leftButtonDiameter = this.radius * 0.27;
+
+    this.rightButtonX = this.radius;
+    this.rightButtonY = this.radius;
+    this.rightButtonDiameter = this.radius * 0.27;
 
     this.mouseOnDial = false;
-    this.mouseOnPeak = false;
+    this.mouseOnPeek = false;
+
+    this.mouseOnLeft = false;
+    this.mouseOnRight = false;
+
+    this.leftSelected = true;
+    this.rightSelected = false;
   }
 
   moveDial() {
@@ -53,7 +67,7 @@ class Device {
   randomiseTarget() {
     this.newWheelPosition = this.oldWheelPosition + ((((random() > 0.5) * 2) - 1) * random(2, 4));
     this.wheelAnimation = true;
-    this.peak = false;
+    this.peek = false;
     this.conceal();
   }
 
@@ -131,6 +145,13 @@ class Device {
     }
 
     return score;
+  }
+
+  checkLeftOrRight() {
+    if ((this.targetPosition > this.dialPosition && this.leftSelected) || (this.targetPosition < this.dialPosition && this.rightSelected)) {
+      return true;
+    }
+    return false;
   }
 
   theta2position(theta) {
@@ -319,7 +340,7 @@ class Device {
       this.conceal();
     }
 
-    if (this.peak) {
+    if (this.peek) {
       fill(128, 170, 178, 200);
     } else {
       fill(128, 170, 178);
@@ -371,7 +392,7 @@ class Device {
     circle(0, 0, this.dialDiameter);
 
     rectMode(CENTER);
-    fill(135, 5, 9);
+    fill(90, 0, 0);
     textSize(28);
     if (!this.screenRevealAnimation && !this.screenConcealAnimation) {
       if (this.screenShown === true) {
@@ -390,17 +411,58 @@ class Device {
 
     // BUTTONS
 
-    // Peak
-    if (this.mouseOnPeak) {
+    // Peek
+    if (this.mouseOnPeek) {
       fill(65, 67, 100);
     } else {
       fill(45, 47, 80);
     }
     noStroke();
-    circle(this.peakX, this.peakY, this.peakDiameter);
+    circle(this.peekX, this.peekY, this.peekDiameter);
 
     textSize(18);
-    fill(150);
-    text("PEAK", -200, 85);
+    fill(200);
+    text("PEEK", -200, 85);
+
+    // Left button
+    if (this.mouseOnLeft) {
+      fill(65, 67, 100);
+    } else {
+      fill(45, 47, 80);
+    }
+
+    if (this.leftSelected) {
+      strokeWeight(3);
+      stroke(230);
+    } else {
+      noStroke();
+    }
+
+    circle(this.leftButtonX, this.leftButtonY, this.leftButtonDiameter);
+    noStroke();
+
+    textSize(18);
+    fill(200);
+    text("LEFT", this.leftButtonX, this.leftButtonY + 5);
+
+    // Right button
+    if (this.mouseOnRight) {
+      fill(65, 67, 100);
+    } else {
+      fill(45, 47, 80);
+    }
+    if (this.rightSelected) {
+      strokeWeight(3);
+      stroke(230);
+    } else {
+      noStroke();
+    }
+    circle(this.rightButtonX, this.rightButtonY, this.rightButtonDiameter);
+    noStroke();
+    
+    textSize(18);
+    fill(200);
+    text("RIGHT", this.rightButtonX, this.rightButtonY + 5);
+
   }
 }

@@ -44,7 +44,7 @@ class Card {
     rect(this.xorigin + this.width * 0.75, this.yorigin + this.height * 0.6, this.width / 2, this.height / 4, 10);
 
     textSize(18);
-    fill(150);
+    fill(200);
     text("NEW", this.xorigin + this.width * 0.75, this.yorigin + this.height * 0.65);
 
     // LHS

@@ -9,6 +9,17 @@ class WavelengthGame {
 
   makeGuess() {
     let newScore = this.device.checkScore();
+
+    // Update score for the Left/Right Phase
+    let correct = this.device.checkLeftOrRight()
+    if (correct && newScore != 4) {
+      if (this.turn == this.teamA) {
+        this.teamB.score += 1;
+      } else {
+        this.teamA.score += 1;
+      }
+    }
+
     this.turn.score += newScore;
     if (this.turn.score >= 10) {
       this.winner = this.turn;
@@ -79,21 +90,24 @@ class Board {
     rect(this.xorigin, this.yorigin, this.width, this.height, 10); 
 
     // Team titles
-    fill(3, 51, 82);
     textSize(this.height / 15);
 
     if (this.game.turn === this.game.teamA) {
-      strokeWeight(4);
-      stroke(128, 170, 178);
+      strokeWeight(8);
+      stroke(3, 51, 82);
+      fill(241, 236, 226);
     } else {
+      fill(3, 51, 82);
       noStroke();
     }
     text("Left Brain", this.xorigin - this.width * 0.38, this.yorigin - this.height * 0.4);
     
     if (this.game.turn === this.game.teamB) {
-      strokeWeight(4);
-      stroke(128, 170, 178);
+      strokeWeight(8);
+      stroke(3, 51, 82);
+      fill(241, 236, 226);
     } else {
+      fill(3, 51, 82);
       noStroke();
     }
     text("Right Brain", this.xorigin + this.width * 0.38, this.yorigin - this.height * 0.4);
